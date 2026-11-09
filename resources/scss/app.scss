@@ -1,0 +1,21 @@
+$primary: #7868a6;
+$body-bg: #f1eef8;
+$body-color: #302a3d;
+$headings-color: #2c3e50;
+$font-family-sans-serif: Arial, sans-serif;
+$grid-breakpoints: (xs:0,sm:576px,md:768px,lg:992px,xl:1200px,xxl:1400px,wide:1480px);
+$container-max-widths: (sm:540px,md:720px,lg:960px,xl:1140px,xxl:1320px,wide:1440px);
+@import '~bootstrap/scss/bootstrap';
+.navbar-brand { white-space: normal; }
+.btn-primary { --bs-btn-color: #fff; --bs-btn-hover-color: #fff; --bs-btn-active-color: #fff; }
+.painting-image { width:100%; aspect-ratio:4/3; object-fit:cover; }
+.detail-image { display:block; max-height:75vh; margin:auto; }
+.preview-image { max-height:200px; }
+.description { white-space:pre-line; overflow-wrap:anywhere; }
+.card { overflow:hidden; }
+.gallery > .col:nth-child(5n+1) .card { background:#fff; }
+.gallery > .col:nth-child(5n+2) .card { background:#f0ebf8; }
+.gallery > .col:nth-child(5n+3) .card { background:#e1d8f0; }
+.gallery > .col:nth-child(5n+4) .card { background:#d2c5e8; }
+.gallery > .col:nth-child(5n+5) .card { background:#c3b2df; }
+:focus-visible { outline:3px solid #5f5188; outline-offset:3px; }

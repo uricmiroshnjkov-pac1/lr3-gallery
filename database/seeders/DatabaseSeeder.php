@@ -1,25 +1,25 @@
 <?php
-
 namespace Database\Seeders;
-
-use App\Models\User;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\Painting;
 use Illuminate\Database\Seeder;
-
-class DatabaseSeeder extends Seeder
-{
-    use WithoutModelEvents;
-
-    /**
-     * Seed the application's database.
-     */
-    public function run(): void
-    {
-        // User::factory(10)->create();
-
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
-        ]);
-    }
+use Illuminate\Support\Facades\Storage;
+class DatabaseSeeder extends Seeder {
+ public function run(): void {
+  // Репродукции Wikimedia Commons из ЛР2. Фото «Кувшинок»: APK,
+  // CC BY 4.0 https://creativecommons.org/licenses/by/4.0/ (уменьшение и JPEG-сжатие).
+  // https://commons.wikimedia.org/wiki/File:Water_Lillies_(1907)_by_Claude_Monet.jpg
+  $items = [
+   ['mona-lisa','Мона Лиза','Леонардо да Винчи','около 1503–1506','Лувр, Париж','Знаменитый портрет эпохи Возрождения. Мягкие переходы света и тени подчёркивают загадочную улыбку модели, а за её спиной открывается далёкий пейзаж. Художник продолжал работать над портретом и в последующие годы.','Сфумато','Мягкие переходы между тонами без резких контуров.'],
+   ['birth-of-venus','Рождение Венеры','Сандро Боттичелли','около 1485','Галерея Уффици, Флоренция','Венера стоит на раковине, которую ветры приносят к берегу. Справа её встречает фигура с цветочным плащом. Плавные линии связывают персонажей в единую композицию, обращённую к античной мифологии.','Темпера','Живописная техника с красками на основе водной эмульсии и связующего вещества.'],
+   ['great-wave','Большая волна в Канагаве','Кацусика Хокусай','около 1831','Оттиски хранятся в разных собраниях','Огромная волна нависает над лодками, а вдали виднеется гора Фудзи. Гравюра входит в серию «Тридцать шесть видов Фудзи». Контраст масштабов подчёркивает силу природы.','Укиё-э','Направление японского искусства, известное цветными гравюрами с пейзажами и сценами повседневной жизни.'],
+   ['water-lilies','Кувшинки','Клод Моне','1907','Музей Мармоттан-Моне, Париж','Работа из серии, посвящённой пруду в саду художника в Живерни. Листья и цветы на поверхности воды переплетаются с отражениями деревьев и неба. Моне наблюдает изменение света и цветовых отношений.','Импрессионизм','Направление живописи, передающее непосредственное впечатление, изменчивый свет и цвет.'],
+   ['night-watch','Ночной дозор','Рембрандт ван Рейн','1642','Рейксмюсеум, Амстердам','Групповой портрет городской стрелковой роты. Жесты, оружие и взгляды персонажей создают ощущение движения. Свет выделяет главные фигуры; привычное название не означает, что изображена ночная сцена.','Светотень','Распределение света и тени, передающее объём, глубину пространства и настроение.'],
+  ];
+  foreach ($items as [$file,$title,$artist,$period,$museum,$description,$technique,$note]) {
+   if (Painting::withTrashed()->where('title', $title)->where('artist', $artist)->exists()) continue;
+   $path = 'paintings/seed-'.$file.'.jpg';
+   Storage::disk('public')->put($path, file_get_contents(storage_path('app/seed-images/'.$file.'.jpg')));
+   Painting::create(['title'=>$title,'artist'=>$artist,'creation_period'=>$period,'museum'=>$museum,'description'=>$description,'technique'=>$technique,'technique_note'=>$note,'acquired_on'=>now()->toDateString(),'image_path'=>$path]);
+  }
+ }
 }
